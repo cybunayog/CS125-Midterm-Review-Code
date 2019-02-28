@@ -1,7 +1,7 @@
 /*
  *
  *
- * Read in text using Scanner()
+ * Read in text using Scanner() and split()
  *
  *
  */
@@ -47,3 +47,91 @@
 		 e.printStackTrace();
 	 }
  }
+
+
+/*
+ *
+ *
+ * Read in text using Scanner() and delimiter
+ *
+ *
+ */
+
+
+ArrayList<Hotel> hotels = new ArrayList();
+    
+
+    FileInputStream fis = null;
+    Scanner fScan = null;
+    
+
+    try
+    {
+      fis = new FileInputStream(fileName);
+      fScan = new Scanner(fis);
+      
+
+      while (fScan.hasNextLine())
+      {
+	
+	//removes parentheses
+        String line = fScan.nextLine();
+        if (line.indexOf("(") >= 0)
+          line = line.substring(line.indexOf("(") + 1);
+        if (line.lastIndexOf(")") >= 0) {
+          line = line.substring(0, line.lastIndexOf(")"));
+        }
+        
+        Scanner lScan = new Scanner(line);
+        lScan.useDelimiter(",");
+        
+
+        Hotel h = new Hotel();
+        h.setUniqueId(Long.parseLong(lScan.next().trim()));
+        h.setHotelName(lScan.next().trim());
+        h.setAddress(lScan.next().trim());
+        h.setCity(lScan.next().trim());
+        h.setStateAbbrev(lScan.next().trim());
+        h.setPricePerNight(Double.parseDouble(lScan.next().trim()));
+        hotels.add(h);
+      }
+    }
+    catch (FileNotFoundException e)
+    {
+      System.out.println("ERROR: " + e.getMessage());
+      
+
+
+
+
+
+
+      if (fScan != null)
+        fScan.close();
+      if (fis != null) {
+        try { fis.close(); } catch (IOException e) { System.out.println("ERROR: " + e.getMessage());
+        }
+      }
+    }
+    catch (Exception e)
+    {
+      System.out.println("ERROR: " + e.getMessage());
+      
+
+
+      if (fScan != null)
+        fScan.close();
+      if (fis != null) {
+        try { fis.close(); } catch (IOException e) { System.out.println("ERROR: " + e.getMessage());
+        }
+      }
+    }
+    finally
+    {
+      if (fScan != null)
+        fScan.close();
+      if (fis != null) {
+        try { fis.close(); } catch (IOException e) { System.out.println("ERROR: " + e.getMessage());
+        }
+      }
+    }
